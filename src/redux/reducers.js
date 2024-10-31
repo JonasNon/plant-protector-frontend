@@ -25,5 +25,14 @@ const users = (state = [], action) => {
             return state
     }
 }
+const search = (state = '', action) => {
+    switch (action.type) {
+        case 'SAVE_SEARCH':
+            return action.payload;  // Just return the search term
+        default:
+            return state;
+    }
+};
 
-export default combineReducers({ users })
+
+export default combineReducers({ users, search })

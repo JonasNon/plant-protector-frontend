@@ -1,80 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as cookie from "cookie"
+import PlantData from "../plant_data.json"
+console.log(PlantData)
 
-const Home = (props) => {
+console.log(cookie.parse(document.cookie));
+
+
+
+const Home = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [usernames, setUsernames] = useState([]); // State to store the fetched usernames
+  const [usernames, setUsernames] = useState([]);
+  const [ownedPlants, setOwnedPlants] = useState([]);
+  const [matchedPlants, setMatchedPlants] = useState([]); // To store matched plant objects
 
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post('http://localhost:3036/users', { username, password });
-
-      if (response.data.success) {
-        setMessage('User created successfully');
-        fetchUsernames();  // Refresh the usernames list after registration
-      }
-    } catch (error) {
-      if (error.response && error.response.data.error) {
-        setMessage(error.response.data.error);  // Display the backend error (e.g., "Username already exists")
-      } else {
-        setMessage('An error occurred while creating the user');
-      }
-    }
-  };
-
-  // Function to fetch all usernames from the server
-  const fetchUsernames = async () => {
-    try {
-      
-      const response = await axios.get('http://localhost:3036/users');
-      console.log(response.data)
-      setUsernames(response.data); // Store usernames in the state
-    } catch (error) {
-      console.error('Error fetching usernames:', error);
-    }
-  };
-
-  // Fetch usernames when the component mounts
   useEffect(() => {
-    fetchUsernames();
+    getOwnedPlants();
   }, []);
 
-  return (
-    <div className="card-container" style={{ backgroundColor: "green", height: "100vh", width: "100vw" }}>
-      <button onClick={() => { console.log(usernames) }}>test</button>
-      <div>
-        <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Register</button>
-        </form>
-        {message && <p>{message}</p>}
-      </div>
+  useEffect(() => {
+    if (ownedPlants.length > 0) {
+      filterOwnedPlants();
+    }
+  }, [ownedPlants]);
 
-      {/* Display the list of usernames */}
-      <div>
-        <h2>Usernames:</h2>
-        <ul>
-          {usernames.map((user, index) => (
-            <li key={index}>{user.username}</li>
-          ))}
-        </ul>
-      </div>
+  const getOwnedPlants = async () => {
+    try {
+      const userId = cookie.parse(document.cookie).userId;
+      console.log("User ID from cookie:", userId);
+  
+      const response = await axios.get(`http://localhost:3036/users/${userId}/ownedPlants`);
+      if (response.data && response.data.ownedPlants) {
+        console.log("Owned plants:", response.data.ownedPlants);
+        setOwnedPlants(response.data.ownedPlants);
+      } else {
+        setOwnedPlants([]);
+      }
+    } catch (error) {
+      console.log("Error fetching owned plants:", error);
+    }
+  };
+
+  // Function to filter PlantData based on ownedPlants scientific names
+  const filterOwnedPlants = () => {
+    const matched = PlantData.filter(plant => 
+      ownedPlants.some(plantObj => plant.scientific_name.includes(plantObj.name))
+    );
+    setMatchedPlants(matched);
+    console.log("Matched Plants:", matched);
+  };
+
+  return (
+    <div className="card-container" style={{ height: "100vh", width: "100vw" }}>
+      <h2>Owned Plants</h2>
+      <ul>
+        {matchedPlants.map((plant, index) => (
+          <li key={index}>
+            <h3>{plant.common_name}</h3>
+            <p>Scientific Name: {plant.scientific_name.join(", ")}</p>
+            <p>Watering: {plant.watering}</p>
+            <p>Sunlight: {plant.sunlight.join(", ")}</p>
+            <img src={plant.default_image?.small_url} alt={plant.common_name} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
