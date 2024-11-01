@@ -9,8 +9,8 @@ import NavBar from './components/NavBar';
 
 const checkAuth = () => {
     const cookies = cookie.parse(document.cookie);
-    return cookies["loggedIn"] ? true : false;
-  };
+    return cookies.loggedIn ? true : false;
+};
 
 
 const ProtectedRoute = ({component: Component, ...rest}) => {

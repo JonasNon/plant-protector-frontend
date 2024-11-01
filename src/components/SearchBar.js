@@ -43,7 +43,7 @@ const SearchBar = (props) => {
   return (
     <div className="card-container">
       <TextField id="outlined-basic" label="Search" variant="outlined" 
-        style={{width: "90vw"}}
+        style={{width: "80vw"}}
           value={searchLocal}
           onChange={(e) => setSearchLocal(e.target.value)}
           onKeyDown={handleKeyDown}/>
