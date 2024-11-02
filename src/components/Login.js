@@ -173,7 +173,7 @@ const Login = (props) => {
           <TextField id="outlined-basic" label="Username" variant="outlined" 
           value={username}
           onChange={(e) => setUsername(e.target.value)}/>
-          <TextField id="outlined-basic" label="Password" variant="outlined" 
+          <TextField id="outlined-basic" label="Password" variant="outlined" type="password"
           style={{margin: "2vh"}}
           value={password}
           onChange={(e) => setPassword(e.target.value)}/>
@@ -187,7 +187,7 @@ const Login = (props) => {
           <TextField id="outlined-basic" label="Username" variant="outlined" 
           value={username}
           onChange={(e) => setUsername(e.target.value)}/>
-          <TextField id="outlined-basic" label="Password" variant="outlined" 
+          <TextField id="outlined-basic" label="Password" variant="outlined" type="password"
           style={{margin: "2vh"}}
           value={password}
           onChange={(e) => setPassword(e.target.value)}/>
