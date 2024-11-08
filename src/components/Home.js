@@ -23,7 +23,7 @@ const Home = () => {
   const getOwnedPlants = async () => {
     try {
       const userId = cookie.parse(document.cookie).userId;
-      const response = await axios.get(`https://plant-protector-backend.vercel.app/api/users/${userId}/ownedPlants`);
+      const response = await axios.get(`https://plant-protector-backend.vercel.app/api/users/${userId}/`);
       if (response.data && response.data.ownedPlants) {
         setOwnedPlants(response.data.ownedPlants);
       } else {
