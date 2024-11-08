@@ -128,7 +128,7 @@ const Login = (props) => {
     try {
       
       const response = await axios.get('https://plant-protector-backend.vercel.app/api/users');
-      console.log(response.data)
+      // console.log(response.data)
       setUsernames(response.data); // Store usernames in the state
     } catch (error) {
       console.error('Error fetching usernames:', error);
