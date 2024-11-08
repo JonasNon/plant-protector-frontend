@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import debounce from 'lodash.debounce';
 
 const SearchBar = (props) => {
   const navigate = useNavigate();
@@ -10,30 +9,28 @@ const SearchBar = (props) => {
   // Helper function to detect if it's a mobile device
   const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
 
-  // Debounced search function to limit frequency on mobile
-  const debouncedSearch = debounce(() => {
-    if (searchLocal.trim() !== '') {
-      handleSearch();
-    }
-  }, 300);
-
   // Search handler function
   const handleSearch = () => {
-    props.saveSearch(searchLocal);
-    navigate('/search');
+    if (searchLocal.trim() !== '') {
+      props.saveSearch(searchLocal);
+      navigate('/search');
+    }
   };
 
-  // Event handler for input changes (mainly for mobile)
+  // Event handler for input changes
   const handleInputChange = (e) => {
-    setSearchLocal(e.target.value);
-    if (isMobile()) {
-      debouncedSearch();
+    const value = e.target.value;
+    setSearchLocal(value);
+
+    // Automatically search on every keystroke for mobile
+    if (isMobile() && value.trim() !== '') {
+      props.saveSearch(value);
     }
   };
 
   // Event handler for Enter key on desktop
   const handleKeyDown = (e) => {
-    if (!isMobile() && e.key === 'Enter') {
+    if (e.key === 'Enter') {
       handleSearch();
     }
   };
