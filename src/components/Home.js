@@ -138,7 +138,7 @@ const Home = () => {
 
   return (
     <div className="card-container" style={{
-      height: "100vh",
+      height: "100%",
       width: "100vw",
       backgroundImage: `url(${plantBackground})`,
       backgroundRepeat: "repeat-y",
