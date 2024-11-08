@@ -151,10 +151,7 @@ const Home = () => {
         gap: "2rem",
         listStyle: "none",
         padding: "3rem",
-        margin: "0",
-        backgroundImage: `url(${plantBackground})`,
-        backgroundRepeat: "repeat-y",
-        backgroundSize: "cover",
+        margin: "0"
       }}>
         {matchedPlants.map((plant, index) => (
           <li key={index} className="plant-card water-level-fill" style={{
