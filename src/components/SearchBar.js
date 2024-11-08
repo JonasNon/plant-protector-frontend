@@ -1,58 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import * as cookie from "cookie"
 import TextField from '@mui/material/TextField';
-import PlantData from "../plant_data.json"
-
-// require('dotenv').config();
-const apiKey = process.env.REACT_APP_API_KEY;
-
-
+import debounce from 'lodash.debounce';
 
 const SearchBar = (props) => {
   const navigate = useNavigate();
-
   const [searchLocal, setSearchLocal] = useState('');
-  const [results, setResults] = useState('')
 
+  // Helper function to detect if it's a mobile device
+  const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+  // Debounced search function to limit frequency on mobile
+  const debouncedSearch = debounce(() => {
+    if (searchLocal.trim() !== '') {
       handleSearch();
-    } else if (isMobile()) {
+    }
+  }, 300);
+
+  // Search handler function
+  const handleSearch = () => {
+    props.saveSearch(searchLocal);
+    navigate('/search');
+  };
+
+  // Event handler for input changes (mainly for mobile)
+  const handleInputChange = (e) => {
+    setSearchLocal(e.target.value);
+    if (isMobile()) {
+      debouncedSearch();
+    }
+  };
+
+  // Event handler for Enter key on desktop
+  const handleKeyDown = (e) => {
+    if (!isMobile() && e.key === 'Enter') {
       handleSearch();
     }
   };
-  
-  const isMobile = () => {
-    return /Mobi|Android/i.test(navigator.userAgent);
-  };
-
-
-  const handleSearch = () => {
-    console.log(searchLocal)
-    // props.saveSearch(search)
-    console.log(props)
-    props.saveSearch(searchLocal)
-    // props.setSearch(searchLocal)
-    console.log(props.search)
-    navigate('/search')
-  }
-
-
-
-
 
   return (
     <div className="card-container">
-      <TextField id="outlined-basic" label="Search" variant="outlined" 
-        style={{width: "80vw"}}
-          value={searchLocal}
-          onChange={(e) => setSearchLocal(e.target.value)}
-          onKeyDown={handleKeyDown}/>
+      <TextField
+        id="outlined-basic"
+        label="Search"
+        variant="outlined"
+        style={{ width: "80vw" }}
+        value={searchLocal}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+      />
     </div>
   );
-}
+};
 
 export default SearchBar;
