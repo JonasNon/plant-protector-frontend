@@ -19,11 +19,15 @@ const SearchBar = (props) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      handleSearch()
-    } else{
-      return
+      handleSearch();
+    } else if (isMobile()) {
+      handleSearch();
     }
-  }
+  };
+  
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
 
 
   const handleSearch = () => {
