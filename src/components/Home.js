@@ -23,7 +23,7 @@ const Home = () => {
   const getOwnedPlants = async () => {
     try {
       const userId = cookie.parse(document.cookie).userId;
-      const response = await axios.get(`https://plant-protector-backend.vercel.app/users/${userId}/ownedPlants`);
+      const response = await axios.get(`https://plant-protector-backend.vercel.app/api/users/${userId}/ownedPlants`);
       if (response.data && response.data.ownedPlants) {
         setOwnedPlants(response.data.ownedPlants);
       } else {
@@ -40,7 +40,7 @@ const Home = () => {
       const userId = cookie.parse(document.cookie).userId;
 
       // Send request to delete plant from user's collection
-      await axios.put(`https://plant-protector-backend.vercel.app/users/${userId}/removePlant`, { plantName });
+      await axios.put(`https://plant-protector-backend.vercel.app/api/users/${userId}/removePlant`, { plantName });
       // setFeedbackMessage('Plant removed!');
 
       // Update the ownedPlants state to reflect the deletion
@@ -62,7 +62,7 @@ const Home = () => {
       const userId = cookie.parse(document.cookie).userId;
       const currentDate = new Date().toLocaleString();
 
-      await axios.put(`https://plant-protector-backend.vercel.app/users/${userId}/updatePlant`, {
+      await axios.put(`https://plant-protector-backend.vercel.app/api/users/${userId}/updatePlant`, {
         plantName: ownedPlants[index].name,
         lastWatered: currentDate
       });

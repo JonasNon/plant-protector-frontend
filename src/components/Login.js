@@ -64,7 +64,7 @@ const Login = (props) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('https://plant-protector-backend.vercel.app/users', { username, password, tryRegister: true });
+      const response = await axios.post('https://plant-protector-backend.vercel.app/api/users', { username, password, tryRegister: true });
   
       if (response.data.success) {
         setMessage('User created successfully');
@@ -95,7 +95,7 @@ const Login = (props) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('https://plant-protector-backend.vercel.app/users', { username, password, tryRegister: false });
+      const response = await axios.post('https://plant-protector-backend.vercel.app/api/users', { username, password, tryRegister: false });
   
       if (response.data.success) {
         setMessage('User logged in');
@@ -127,7 +127,7 @@ const Login = (props) => {
   const fetchUsernames = async () => {
     try {
       
-      const response = await axios.get('https://plant-protector-backend.vercel.app/users');
+      const response = await axios.get('https://plant-protector-backend.vercel.app/api/users');
       console.log(response.data)
       setUsernames(response.data); // Store usernames in the state
     } catch (error) {
