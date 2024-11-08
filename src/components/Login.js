@@ -10,6 +10,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import backgroundImage from '../images/pastel-green-background.png';
 
+// const apiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3036';
+// https://plant-protector-backend.vercel.app
+
 console.log(cookie.parse(document.cookie));
 
 function CustomTabPanel(props) {
@@ -61,7 +64,7 @@ const Login = (props) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:3036/users', { username, password, tryRegister: true });
+      const response = await axios.post('https://plant-protector-backend.vercel.app/users', { username, password, tryRegister: true });
   
       if (response.data.success) {
         setMessage('User created successfully');
@@ -92,7 +95,7 @@ const Login = (props) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:3036/users', { username, password, tryRegister: false });
+      const response = await axios.post('https://plant-protector-backend.vercel.app/users', { username, password, tryRegister: false });
   
       if (response.data.success) {
         setMessage('User logged in');
@@ -124,7 +127,7 @@ const Login = (props) => {
   const fetchUsernames = async () => {
     try {
       
-      const response = await axios.get('http://localhost:3036/users');
+      const response = await axios.get('https://plant-protector-backend.vercel.app/users');
       console.log(response.data)
       setUsernames(response.data); // Store usernames in the state
     } catch (error) {

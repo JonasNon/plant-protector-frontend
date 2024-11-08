@@ -15,7 +15,7 @@ const SearchPage = (props) => {
   useEffect(() => {
     const fetchOwnedPlants = async () => {
       const userId = cookie.parse(document.cookie).userId;
-      const response = await axios.get(`http://localhost:3036/users/${userId}/ownedPlants`);
+      const response = await axios.get(`https://plant-protector-backend.vercel.app/users/${userId}/ownedPlants`);
       setOwnedPlants(response.data.ownedPlants || []);
     };
 
@@ -34,16 +34,16 @@ const SearchPage = (props) => {
     try {
       if (isPlantOwned(plantName)) {
         // Remove plant from user's collection
-        await axios.put(`http://localhost:3036/users/${userId}/removePlant`, { plantName });
+        await axios.put(`https://plant-protector-backend.vercel.app/users/${userId}/removePlant`, { plantName });
         setFeedbackMessage('Plant removed!');
       } else {
         // Add plant to user's collection
-        await axios.put(`http://localhost:3036/users/${userId}/addPlant`, { plantName });
+        await axios.put(`https://plant-protector-backend.vercel.app/users/${userId}/addPlant`, { plantName });
         setFeedbackMessage('Plant added!');
       }
   
       // Refetch owned plants to ensure the UI reflects the updated state
-      const response = await axios.get(`http://localhost:3036/users/${userId}/ownedPlants`);
+      const response = await axios.get(`https://plant-protector-backend.vercel.app/users/${userId}/ownedPlants`);
       setOwnedPlants(response.data.ownedPlants || []);
     } catch (error) {
       console.error("Error updating plant list:", error);
